@@ -1,0 +1,50 @@
+# Auto detect text files and normalize line endings to LF
+* text=auto
+
+# JavaScript
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+
+# Vue
+*.vue text eol=lf
+
+# JSON
+*.json text eol=lf
+
+# Markdown
+*.md text eol=lf
+
+# YAML
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Shell
+*.sh text eol=lf
+*.bash text eol=lf
+
+# Windows
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.exe binary
+*.dll binary
+*.class binary
+*.jar binary
+
+# Archives
+*.7z binary
+*.gz binary
+*.iso binary
+*.jar binary
+*.rar binary
+*.tar binary
+*.zip binary
+
+# Images
+*.gif binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.svg text eol=lf
+*.ico binary
