@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Surat Keterangan Sehat</title>
+  <style>
+    body { font-family: {{font}}; margin: 0; padding: 0; color: #333; }
+    .container { padding: {{marginAtas}} {{marginKanan}} {{marginBawah}} {{marginKiri}}; }
+    .header { display: flex; align-items: center; justify-content: center; border-bottom: 2px solid #00BCD4; padding-bottom: 12px; margin-bottom: 20px; gap: 16px; }
+    .header img.logo { height: 60px; }
+    .header-text { text-align: center; }
+    .header-text h1 { font-size: 18pt; color: #00BCD4; margin: 0; }
+    .header-text p { font-size: 9pt; margin: 2px 0; color: #666; }
+    .title { text-align: center; font-size: 14pt; font-weight: 700; margin: 24px 0 4px; text-decoration: underline; }
+    .subtitle { text-align: center; font-size: 10pt; color: #666; margin-bottom: 20px; }
+    .content { font-size: 11pt; line-height: 1.8; }
+    .content p { margin: 4px 0; }
+    .content .field-label { display: inline-block; width: 160px; }
+    .footer { margin-top: 40px; display: flex; justify-content: space-between; }
+    .signature { text-align: center; width: 200px; }
+    .signature .line { border-top: 1px solid #333; margin-top: 60px; padding-top: 4px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    {{#if showHeader}}
+    <div class="header">
+      {{#if logoPath}}<img class="logo" src="{{logoPath}}" />{{/if}}
+      <div class="header-text">
+        <h1>{{judul}}</h1>
+        <p>{{alamat}}</p>
+        <p>Telp: {{telepon}} {{#if email}}| Email: {{email}}{{/if}}</p>
+      </div>
+      {{#if logoKeduaPath}}<img class="logo" src="{{logoKeduaPath}}" />{{/if}}
+    </div>
+    {{/if}}
+
+    <div class="title">SURAT KETERANGAN SEHAT</div>
+    <div class="subtitle">No: {{noSurat}}</div>
+
+    <div class="content">
+      <p>Yang bertanda tangan di bawah ini, dokter yang memeriksa di {{judul}}, menerangkan bahwa:</p>
+      <br/>
+      <p><span class="field-label">Nama</span>: <strong>{{namaPasien}}</strong></p>
+      <p><span class="field-label">Jenis Kelamin</span>: {{jenisKelamin}}</p>
+      <p><span class="field-label">Umur</span>: {{umur}}</p>
+      <p><span class="field-label">Alamat</span>: {{alamat}}</p>
+      <br/>
+      <p>Setelah dilakukan pemeriksaan kesehatan, dinyatakan dalam keadaan <strong>SEHAT</strong>.</p>
+      {{#if isiSurat}}<br/><p>{{isiSurat}}</p>{{/if}}
+      <br/>
+      <p>Demikian surat keterangan ini dibuat untuk dipergunakan sebagaimana mestinya.</p>
+    </div>
+
+    <div class="footer">
+      <div class="signature">
+        {{#if signatureKiri}}
+        <p>{{signatureKiri}}</p>
+        <div class="line">{{signatureKiriNama}}</div>
+        {{/if}}
+      </div>
+      <div class="signature">
+        <p>{{tglSurat}}</p>
+        <p>Dokter Pemeriksa,</p>
+        <div class="line">{{namaDokter}}</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

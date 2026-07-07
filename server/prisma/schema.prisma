@@ -1,0 +1,473 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============ ENUMS ============
+
+enum Role {
+  MASTER
+  ADMIN
+  DOKTER
+  APOTEK
+}
+
+enum JenisKelamin {
+  LAKI_LAKI
+  PEREMPUAN
+}
+
+enum TipeAlergi {
+  OBAT
+  UMUM
+}
+
+enum StatusAntrean {
+  PENDING
+  CONFIRMED
+  WAITING
+  ENGAGED
+  SUCCEED
+}
+
+enum TipeSurat {
+  SURAT_SAKIT
+  SURAT_SEHAT
+  SURAT_BEROBAT
+  PERSETUJUAN
+  PENOLAKAN
+}
+
+enum MetodeBayar {
+  TUNAI
+  QRIS
+}
+
+enum StatusBayar {
+  LUNAS
+  BELUM_LUNAS
+}
+
+// ============ MODELS ============
+
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  password     String
+  role         Role
+  namaStaf     String
+  jabatan      String?
+  noHp         String?
+  email        String?
+  noPegawai    String?
+  catatan      String?
+  tglLahir     DateTime?
+  isPic        Boolean  @default(false)
+  isActive     Boolean  @default(true)
+  sessionToken String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  visits Visit[] @relation("DokterVisits")
+
+  @@map("users")
+}
+
+model Patient {
+  id           Int          @id @default(autoincrement())
+  noRm         String       @unique
+  namaPasien   String
+  tglLahir     DateTime
+  jenisKelamin JenisKelamin
+  alamat       String?
+  noKtp        String?
+  noHp         String?
+  email        String?
+  tipePasien   String       @default("Umum")
+  noAsuransi   String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  allergies Allergy[]
+  visits    Visit[]
+
+  @@map("patients")
+}
+
+model Allergy {
+  id         Int        @id @default(autoincrement())
+  patientId  Int
+  tipeAlergi TipeAlergi
+  namaAlergi String
+  keterangan String?
+  createdAt  DateTime   @default(now())
+
+  patient Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@map("allergies")
+}
+
+model Visit {
+  id             Int           @id @default(autoincrement())
+  patientId      Int
+  dokterId       Int?
+  tglKunjungan   DateTime
+  jamKunjungan   String?
+  statusAntrean  StatusAntrean @default(PENDING)
+  noAntrean      String?
+  poli           String        @default("Umum")
+  jenisKunjungan String?
+  jenisPerawatan String        @default("Rawat Jalan")
+  keluhan        String?
+  lamaPeriksa    Int           @default(10)
+  tipeBayar      String        @default("Langsung")
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  patient       Patient        @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  dokter        User?          @relation("DokterVisits", fields: [dokterId], references: [id], onDelete: SetNull)
+  medicalRecord MedicalRecord?
+  invoice       Invoice?
+
+  @@map("visits")
+}
+
+model MedicalRecord {
+  id         Int      @id @default(autoincrement())
+  visitId    Int      @unique
+  subjective String?
+  objective  String?
+  assessment String?
+  plan       String?
+  tglPeriksa DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  visit          Visit           @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  vitalSigns     VitalSign?
+  diagnoses      Diagnosis[]
+  prescriptions  Prescription[]
+  medicalLetters MedicalLetter[]
+  editHistory    EditHistory[]
+
+  @@map("medical_records")
+}
+
+model VitalSign {
+  id          Int    @id @default(autoincrement())
+  mrId        Int    @unique
+  beratBadan  Float?
+  tinggiBadan Float?
+  suhu        Float?
+  tensi       String?
+  nadi        Int?
+  respirasi   Int?
+  saturasiO2  Float?
+  gulaDarah   Float?
+  bmi         Float?
+  lingkarPerut Float?
+
+  medicalRecord MedicalRecord @relation(fields: [mrId], references: [id], onDelete: Cascade)
+
+  @@map("vital_signs")
+}
+
+model Icd10 {
+  id            Int      @id @default(autoincrement())
+  code          String   @unique
+  description   String
+  descriptionId String?
+  category      String?
+  categoryName  String?
+  chapter       String?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  diagnoses Diagnosis[]
+
+  @@map("icd10_master")
+}
+
+model Diagnosis {
+  id            Int    @id @default(autoincrement())
+  mrId          Int
+  icdId         Int?
+  icdCode       String?
+  deskripsi     String?
+  catatanManual String?
+
+  medicalRecord MedicalRecord @relation(fields: [mrId], references: [id], onDelete: Cascade)
+  icd10         Icd10?        @relation(fields: [icdId], references: [id], onDelete: SetNull)
+
+  @@map("diagnoses")
+}
+
+model Medicine {
+  id           Int       @id @default(autoincrement())
+  kode         String    @unique
+  namaObat     String
+  farmasi      String?
+  jenis        String?
+  kategori     String?
+  satuan       String?
+  dosis        String?
+  stok         Int       @default(0)
+  hargaUmum    Float?
+  hargaBeli    Float?
+  avgHpp       Float?
+  hargaOtc     Float?
+  marginProfit Float?
+  tglExpired   DateTime?
+  nomorBatch   String?
+  barcode      String?
+  kfaCode      String?
+  kandungan    String?
+  deskripsi    String?
+  kunciHarga   Boolean   @default(false)
+  depot        String    @default("Apotek")
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  prescriptions       Prescription[]
+  medicineIngredients MedicineIngredient[]
+
+  @@map("medicines")
+}
+
+model Consumable {
+  id              Int       @id @default(autoincrement())
+  kode            String    @unique
+  namaBarang      String
+  brand           String?
+  jenis           String?
+  satuan          String?
+  ukuranDosis     String?
+  stok            Int       @default(0)
+  hargaUmum       Float?
+  hargaBeli       Float?
+  avgHpp          Float?
+  hargaOtc        Float?
+  marginProfit    Float?
+  tglExpired      DateTime?
+  nomorBatch      String?
+  barcode         String?
+  kunciHarga      Boolean   @default(false)
+  bisaDijualApotek Boolean  @default(false)
+  keterangan      String?
+  depot           String    @default("Apotek")
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("consumables")
+}
+
+model Prescription {
+  id          Int      @id @default(autoincrement())
+  mrId        Int
+  medicineId  Int?
+  namaObat    String
+  jumlah      Int
+  satuan      String?
+  aturanPakai String?
+  frekuensi   String?
+  isRacikan   Boolean  @default(false)
+  namaRacikan String?
+  tipeRacik   String?
+  depot       String   @default("Apotek")
+  kfaCode     String?
+  catatan     String?
+  createdAt   DateTime @default(now())
+
+  medicalRecord MedicalRecord @relation(fields: [mrId], references: [id], onDelete: Cascade)
+  medicine      Medicine?     @relation(fields: [medicineId], references: [id], onDelete: SetNull)
+
+  @@map("prescriptions")
+}
+
+model MedicalLetter {
+  id         Int       @id @default(autoincrement())
+  mrId       Int
+  tipeSurat  TipeSurat
+  isiSurat   String?
+  tglMulai   DateTime?
+  tglSelesai DateTime?
+  durasiHari Int?
+  createdAt  DateTime  @default(now())
+
+  medicalRecord MedicalRecord @relation(fields: [mrId], references: [id], onDelete: Cascade)
+
+  @@map("medical_letters")
+}
+
+model Invoice {
+  id          Int         @id @default(autoincrement())
+  visitId     Int         @unique
+  noInvoice   String      @unique
+  noKwitansi  String?
+  totalBayar  Float       @default(0)
+  pembulatan  Float       @default(0)
+  metodeBayar MetodeBayar @default(TUNAI)
+  statusBayar StatusBayar @default(BELUM_LUNAS)
+  dibayarOleh String?
+  catatan     String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  visit    Visit         @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  items    InvoiceItem[]
+  payments Payment[]
+
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id         Int    @id @default(autoincrement())
+  invoiceId  Int
+  deskripsi  String
+  depot      String?
+  jumlah     Int    @default(1)
+  harga      Float
+  diskon     Float  @default(0)
+  totalHarga Float
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@map("invoice_items")
+}
+
+model Payment {
+  id              Int      @id @default(autoincrement())
+  invoiceId       Int
+  tanggal         DateTime @default(now())
+  nominal         Float
+  metodeBayar     String
+  penanggungJawab String?
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+model EditHistory {
+  id        Int      @id @default(autoincrement())
+  mrId      Int
+  fieldName String
+  oldValue  String?
+  newValue  String?
+  changedBy String?
+  changedAt DateTime @default(now())
+
+  medicalRecord MedicalRecord @relation(fields: [mrId], references: [id], onDelete: Cascade)
+
+  @@map("edit_history")
+}
+
+model PrintTemplate {
+  id            Int      @id @default(autoincrement())
+  tipePrinter   String   @default("inkjet")
+  marginKiri    String   @default("1 inch")
+  marginKanan   String   @default("1 inch")
+  marginAtas    String   @default("1 inch")
+  marginBawah   String   @default("1 inch")
+  orientation   String   @default("portrait")
+  kertas        String   @default("A4")
+  font          String   @default("12pt")
+  judul         String   @default("Klinik Keluarga Sehat")
+  alamat        String?
+  telepon       String?
+  email         String?
+  logoPath      String?
+  logoKeduaPath String?
+  skipHeader    Boolean  @default(false)
+  keterangan    String?
+  signatureKiri String?
+  signatureKanan String?
+  additionalInfo Json?
+  updatedAt     DateTime @updatedAt
+
+  @@map("print_templates")
+}
+
+model Setting {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String?
+  category  String?
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}
+
+// ============ DDI MODELS ============
+
+enum InteractionSeverity {
+  MAJOR
+  MODERATE
+  MINOR
+  UNKNOWN
+}
+
+enum ValidationStatus {
+  UNVALIDATED
+  VALIDATED
+  REJECTED
+}
+
+model ActiveIngredient {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  kfaCode     String?  @unique
+  rxcui       String?  @unique // RxNorm Concept Unique Identifier (for NLM API mapping)
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  medicines     MedicineIngredient[]
+  interactions1 DrugInteraction[]    @relation("Ingredient1Interactions")
+  interactions2 DrugInteraction[]    @relation("Ingredient2Interactions")
+
+  @@map("active_ingredients")
+}
+
+model MedicineIngredient {
+  id                 Int      @id @default(autoincrement())
+  medicineId         Int
+  activeIngredientId Int
+  kekuatan           String?  // e.g. "500 mg"
+  createdAt          DateTime @default(now())
+
+  medicine         Medicine         @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+  activeIngredient ActiveIngredient @relation(fields: [activeIngredientId], references: [id], onDelete: Cascade)
+
+  @@unique([medicineId, activeIngredientId])
+  @@map("medicine_ingredients")
+}
+
+model DrugInteraction {
+  id                 Int                 @id @default(autoincrement())
+  ingredient1Id      Int
+  ingredient2Id      Int
+  severity           InteractionSeverity @default(UNKNOWN)
+  description        String?             @db.Text
+  clinicalConsequence String?            @db.Text
+  evidence           String?             @db.Text // JSON or Text for references/PubMed IDs
+  status             ValidationStatus    @default(UNVALIDATED)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+
+  ingredient1 ActiveIngredient @relation("Ingredient1Interactions", fields: [ingredient1Id], references: [id], onDelete: Cascade)
+  ingredient2 ActiveIngredient @relation("Ingredient2Interactions", fields: [ingredient2Id], references: [id], onDelete: Cascade)
+
+  @@unique([ingredient1Id, ingredient2Id])
+  @@map("drug_interactions")
+}

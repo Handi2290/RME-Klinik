@@ -1,0 +1,114 @@
+[
+  {
+    "ingredient1": { "name": "Deferiprone", "kfaCode": "91000204" },
+    "ingredient2": { "name": "Besi (Fe)" },
+    "severity": "MODERATE",
+    "description": "Kation polivalen mengikat deferiprone dan menurunkan absorpsinya. Beri jeda minimal 4 jam antara pemberian deferiprone dan obat/suplemen yang mengandung kation polivalen.",
+    "clinicalConsequence": "Penurunan absorpsi deferiprone"
+  },
+  {
+    "ingredient1": { "name": "Deferiprone", "kfaCode": "91000204" },
+    "ingredient2": { "name": "Aluminium (Al)" },
+    "severity": "MODERATE",
+    "description": "Kation polivalen mengikat deferiprone dan menurunkan absorpsinya. Beri jeda minimal 4 jam antara pemberian deferiprone dan obat/suplemen yang mengandung kation polivalen.",
+    "clinicalConsequence": "Penurunan absorpsi deferiprone"
+  },
+  {
+    "ingredient1": { "name": "Deferiprone", "kfaCode": "91000204" },
+    "ingredient2": { "name": "Seng (Zn)" },
+    "severity": "MODERATE",
+    "description": "Kation polivalen mengikat deferiprone dan menurunkan absorpsinya. Beri jeda minimal 4 jam antara pemberian deferiprone dan obat/suplemen yang mengandung kation polivalen.",
+    "clinicalConsequence": "Penurunan absorpsi deferiprone"
+  },
+  {
+    "ingredient1": { "name": "Deferiprone", "kfaCode": "91000204" },
+    "ingredient2": { "name": "Diclofenac", "kfaCode": "91000347" },
+    "severity": "MODERATE",
+    "description": "Inhibitor UGT1A6 menghambat metabolisme/glukuronidasi deferiprone, meningkatkan paparan obat. Hindari penggunaan bersama.",
+    "clinicalConsequence": "Peningkatan paparan deferiprone"
+  },
+  {
+    "ingredient1": { "name": "Deferiprone", "kfaCode": "91000204" },
+    "ingredient2": { "name": "Probenecid", "kfaCode": "91001165" },
+    "severity": "MODERATE",
+    "description": "Inhibitor UGT1A6 menghambat metabolisme/glukuronidasi deferiprone, meningkatkan paparan obat. Hindari penggunaan bersama.",
+    "clinicalConsequence": "Peningkatan paparan deferiprone"
+  },
+  {
+    "ingredient1": { "name": "Deferiprone", "kfaCode": "91000204" },
+    "ingredient2": { "name": "Silymarin" },
+    "severity": "MODERATE",
+    "description": "Inhibitor UGT1A6 menghambat metabolisme/glukuronidasi deferiprone, meningkatkan paparan obat. Hindari penggunaan bersama.",
+    "clinicalConsequence": "Peningkatan paparan deferiprone"
+  },
+  {
+    "ingredient1": { "name": "Deferiprone", "kfaCode": "91000204" },
+    "ingredient2": { "name": "Abemaciclib", "kfaCode": "91001419" },
+    "severity": "MAJOR",
+    "description": "Sinergisme farmakodinamik meningkatkan risiko neutropenia/agranulositosis berat. Hindari atau gunakan alternatif; jika tidak memungkinkan, pantau ANC lebih sering.",
+    "clinicalConsequence": "Risiko neutropenia/agranulositosis berat"
+  },
+  {
+    "ingredient1": { "name": "Deferiprone", "kfaCode": "91000204" },
+    "ingredient2": { "name": "Acalabrutinib" },
+    "severity": "MAJOR",
+    "description": "Sinergisme farmakodinamik meningkatkan risiko neutropenia/agranulositosis berat. Hindari atau gunakan alternatif; jika tidak memungkinkan, pantau ANC lebih sering.",
+    "clinicalConsequence": "Risiko neutropenia/agranulositosis berat"
+  },
+  {
+    "ingredient1": { "name": "Deferiprone", "kfaCode": "91000204" },
+    "ingredient2": { "name": "Abatacept" },
+    "severity": "MAJOR",
+    "description": "Sinergisme farmakodinamik meningkatkan risiko neutropenia/agranulositosis berat. Hindari atau gunakan alternatif; jika tidak memungkinkan, pantau ANC lebih sering.",
+    "clinicalConsequence": "Risiko neutropenia/agranulositosis berat"
+  },
+  {
+    "ingredient1": { "name": "Deferiprone", "kfaCode": "91000204" },
+    "ingredient2": { "name": "Clozapine", "kfaCode": "91000412" },
+    "severity": "MAJOR",
+    "description": "Sinergisme farmakodinamik meningkatkan risiko neutropenia/agranulositosis berat. Hindari atau gunakan alternatif; jika tidak memungkinkan, pantau ANC lebih sering.",
+    "clinicalConsequence": "Risiko neutropenia/agranulositosis berat"
+  },
+  {
+    "ingredient1": { "name": "Deferiprone", "kfaCode": "91000204" },
+    "ingredient2": { "name": "Aldesleukin" },
+    "severity": "MAJOR",
+    "description": "Saling meningkatkan toksisitas via sinergisme farmakodinamik (risiko mielosupresi). Hindari atau gunakan alternatif.",
+    "clinicalConsequence": "Risiko mielosupresi"
+  },
+  {
+    "ingredient1": { "name": "Deferiprone", "kfaCode": "91000204" },
+    "ingredient2": { "name": "Baricitinib", "kfaCode": "91001407" },
+    "severity": "MAJOR",
+    "description": "Efek imunosupresif aditif meningkatkan risiko infeksi. Hindari kombinasi atau gunakan alternatif.",
+    "clinicalConsequence": "Risiko infeksi"
+  },
+  {
+    "ingredient1": { "name": "Deferiprone", "kfaCode": "91000204" },
+    "ingredient2": { "name": "Betibeglogene autotemcel" },
+    "severity": "MAJOR",
+    "description": "Iron chelator bersifat mielosupresif. Hentikan iron chelator >=7 hari sebelum conditioning dan hindari selama 6 bulan setelah infus.",
+    "clinicalConsequence": "Mielosupresif"
+  },
+  {
+    "ingredient1": { "name": "Deferiprone", "kfaCode": "91000204" },
+    "ingredient2": { "name": "Exa-cel" },
+    "severity": "MAJOR",
+    "description": "Iron chelator bersifat mielosupresif. Hentikan iron chelator >=7 hari sebelum conditioning dan hindari selama 6 bulan setelah infus.",
+    "clinicalConsequence": "Mielosupresif"
+  },
+  {
+    "ingredient1": { "name": "Deferiprone", "kfaCode": "91000204" },
+    "ingredient2": { "name": "Deferasirox", "kfaCode": "91000313" },
+    "severity": "MAJOR",
+    "description": "Penggunaan bersamaan meningkatkan risiko efek samping aditif (mielosupresi, agranulositosis); kombinasi hanya atas pertimbangan klinis khusus.",
+    "clinicalConsequence": "Risiko efek samping aditif"
+  },
+  {
+    "ingredient1": { "name": "Deferiprone", "kfaCode": "91000204" },
+    "ingredient2": { "name": "Deferoxamine", "kfaCode": "91000174" },
+    "severity": "MAJOR",
+    "description": "Penggunaan bersamaan meningkatkan risiko efek samping aditif (mielosupresi, agranulositosis); kombinasi hanya atas pertimbangan klinis khusus.",
+    "clinicalConsequence": "Risiko efek samping aditif"
+  }
+]
